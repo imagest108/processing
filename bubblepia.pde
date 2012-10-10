@@ -1,6 +1,7 @@
 
-
-int numBubbles = 200;
+int currentTotal = 5;
+int numBubbles = 500;
+int bubbleid;
 Bubble[] bubbles = new Bubble[numBubbles];
 
 boolean colorChange = true;
@@ -10,15 +11,18 @@ boolean colorChange = true;
 
 
 void setup() {
-  size(960, 640); 
+  size(800, 560); 
 
 
   for (int i=0; i<numBubbles; i++) {
-    bubbles[i] = new Bubble(random(width), random(height), random(20, 100), i, bubbles);
+   
+    bubbles[i] = new Bubble(random(width), height, random(20, 100), i, bubbles);
+   
   }
 
   frameRate(30);
   colorChange = !colorChange;
+  //id = 0;
 }
 
 
@@ -28,17 +32,30 @@ void setup() {
 void draw() {
   background(255);
   stroke(255);
+  
 
-  for (int i=0; i<numBubbles; i++) {
+
+  for (int i=0; i<currentTotal; i++) {
 
     if (colorChange) { 
       bubbles[i].display(1);
       bubbles[i].collide();
-    }else{
+    }
+    else {
       bubbles[i].display(2);
       bubbles[i].collide();
-    }
+      
+        }
   }
+  
+  if(random(1)<0.5){
+    currentTotal++;
+    if (currentTotal >= bubbles.length) {
+      currentTotal = bubbles.length-1; 
+    }
+  }  
+  
+    
 }
 
 void mousePressed() {
@@ -46,6 +63,8 @@ void mousePressed() {
   setup();
   
 }
+
+
 
 class Bubble {
 
@@ -64,9 +83,10 @@ class Bubble {
   boolean collision;
 
   Bubble(float bx, float by, float bd, int bid, Bubble[] otherbs) { 
-    x= bx;
+    
     constrain(x, 0+d, width-d);
     constrain(y, 0+d, height-d);
+    x= bx;
     y= by;
     d= bd;
     speed= d*0.042;
@@ -77,6 +97,9 @@ class Bubble {
 
   void display(int bubbleColor) {
 
+ 
+    
+    
     if (bubbleColor == 1) {
       cFact3= 204-(id*1.43);
       cFact2= 156+(id*0.28);
@@ -105,11 +128,14 @@ class Bubble {
 
     fill(255, random(40, 255));
     ellipse(x-5-d/5, y-1-d/5, d/random(7, 12), d/random(7, 12));
+    
+    //println(id);
+
   }
 
 
   void collide() {
-    for (int i= id+1; i<numBubbles; i++) {
+    for (int i= id+1; i<currentTotal; i++) {
       if (dist(others[i].x, others[i].y, x, y) < (others[i].d + d)/3) { 
         collision = true;
         d=0; 
@@ -126,5 +152,4 @@ class Bubble {
     }
   }
 }
-
 
