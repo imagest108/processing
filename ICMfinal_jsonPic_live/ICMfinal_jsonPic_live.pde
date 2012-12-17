@@ -8,8 +8,6 @@
  12.3.2012   Jess Jiyoung Jung
  *********************************************************************************************************/
 
-import fisica.*;
-import processing.opengl.*;
 import org.json.*;
 
 String baseURL = "https://graph.facebook.com";
